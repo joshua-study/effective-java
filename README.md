@@ -1,7 +1,7 @@
 # Effective Java Study
 <img width="765" alt="image" src="https://github.com/joshua-study/effective-java/assets/64997253/768b518f-01c2-4377-bc26-dd02babaff82">
 
-- [스터디 운영](https://resonant-apogee-185.notion.site/Rule-e5c19c6637194f8e9e042bd5eaea1948?pvs=4)
+- [스터디 운영](https://effective-java.notion.site/Rule-e5c19c6637194f8e9e042bd5eaea1948?pvs=4)
 - [이펙티브 자바 공식 Github](https://github.com/WegraLee/effective-java-3e-source-code)
 - [용어 해설집](https://docs.google.com/document/d/1Nw-_FJKre9x7Uy6DZ0NuAFyYUCjBPCpINxqrP0JFuXk/edit)
 
