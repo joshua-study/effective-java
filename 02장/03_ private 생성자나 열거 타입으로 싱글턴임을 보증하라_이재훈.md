@@ -344,6 +344,41 @@ public class EnumElvisSerialization {
   - 함수형 인터페이스를 만드는 방법
     - 심화 1 : [Understanding java method invocation with](https://blogs.oracle.com/javamagazine/post/understanding-java-method-invocation-with-invokedynamic)
     - 심화 2 : [LambdaMetaFactory](https://docs.oracle.com/javase/8/docs/api/java/lang/invoke/LambdaMetafactory.html) 
+###
+
+- 기본 함수형인터페이스로 타입을 지정할 수 없는 경우 직접 정의할 수 있음
+
+```java
+// 기본 함수형인터페이스
+public class DefaultFunctions {
+  // 매개변수를 받아서 리턴함
+  Function<Integer, String> intToString;
+
+  // 매개변수를 받지 않고 리턴함
+  Supplier<Integer> integerSupplier;
+
+  // 매개변수를 받고 리턴하지 않음
+  Consumer<Integer> integerConsumer;
+
+  // 매개변수를 받고 boolean 값을 리턴함
+  Predicate<Integer> predicate;
+}
+```
+
+```java
+@FunctionalInterface
+public interface MyFunction {
+
+  // 메서드 선언은 1개만 있어야 함
+  // 기본 함수형인터페이스로 타입을 지정할 수 없는 경우 직접 정의할 수 있음
+  String valueOf(Integer integer);
+
+  static String hello() {
+    return "hello";
+  }
+}
+
+```
 
 ### (3) 객체 직렬화
 - 객체를 바이트스트림으로 상호 변환하는 기술
@@ -351,4 +386,5 @@ public class EnumElvisSerialization {
   - Serializable 인터페이스 구현
   - transient를 사용해서 직렬화 하지 않을 필드 선언하기
   - serialVersionUID는 언제 왜 사용하는가?
+    - 클래스의 필드가 변경되더라도 역직렬화를 사용할 때 사용
   - 심화 1 : [객체 직렬화 스펙](https://docs.oracle.com/javase/8/docs/platform/serialization/spec/serialTOC.html)
