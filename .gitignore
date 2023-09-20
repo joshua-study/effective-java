@@ -31,13 +31,4 @@ build
 */**/.DS_Store
 .DS_Store
 
-/monee-api/db/
-/monee-docker/db/
-/db/
-/monee-api/db2/
-/monee-docker/db2/
-/db2/
-/monee-api/monee-api/
-/monee-batch/monee-batch/
-
 .vscode
