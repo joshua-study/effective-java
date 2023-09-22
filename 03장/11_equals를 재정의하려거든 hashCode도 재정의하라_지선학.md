@@ -20,6 +20,10 @@ class example() {
 PhoneNumber 클래스는 hashCode를 재정의하지 않았기 때문에 논리적 동치인 두 객체가
 서로 다른 해시코드를 반환하여 두번째 규약을 지키지 못함
 
+### 백기선님 강의 example
+https://github.com/jshag90/effective-java-study/blob/main/src/main/java/com/ji/effective/java/chapter2/item11/hashtable/HashMapTest.java
+
+
 #### 최악의 (하지만 적법한) hashCode 구헌 - 사용 금지!
 ```java
 class sample(){
@@ -41,6 +45,8 @@ https://zippy-garlic-b9b.notion.site/JAVA-HashSet-HashMap-ef9b85aec6bb40b8a7a34d
 결과적으로 31을 이용하면, 이 곱셈을 시프트 연산과 뺄셈으로 대체해 최적화할 수 있음
 요즘 VM들은 이런 최적화를 자동으로 해줌
 
+31이라는 숫자를 사용했을 때 가장 해시 충돌이 적었다고함
+
 ### 전형적인 hashCode 메서드
 ```java
 class sample(){
@@ -61,15 +67,16 @@ class sample(){
     }
 }
 ```
-hash 메서드는 성능에 민감하지 않은 상황에서만 사용하자
+hash 메서드는 성능에 민감하지 않은 상황에서만 사용하자.
 
-클래스가 불변이고 해시코드를 계산하는 비용이 크다면, 매번 새로 계산하기보다는 캐싱하는 방식으로 교려해야함
+클래스가 불변이고 해시코드를 계산하는 비용이 크다면, 매번 새로 계산하기보다는 캐싱하는 방식으로 고려해야함
 
-해시의 키로 사용되지 않는 경우라면 hashCode가 처음 불릴 때 계산하는 지연 초기화(lazy initialization) 전략을 고려
+해시의 키로 사용되지 않는 경우라면 hashCode가 처음 불릴 때 계산하는 지연 초기화(lazy initialization) 전략을 고려  
+(생성자에서 미리 계산하는게 아니라 hashCode()가 호출 되었을 때 값을 초기화)
 
 ### 해시코드를 지연 초기화하는 hashCode 메서드 - 스레드 안정성까지 고려해야 함
 ```java
-class sample(){
+class Sample(){
     private int hashCode; // 자동으로 0으로 초기화됨
     
     @Override public int hashCode(){
@@ -97,5 +104,10 @@ hashCode는 Object의 API 문서에 기술된 일반 규약을 따라야 하며,
 서로 다른 인스턴스라면 되도록 해시코드도 서로 다르게 규현해야함
 
 AutoValue 프레임워크를 사용하면 멋진 equals와 hashCode를 자동으로 만들어줌
+
+### 추가 정리 
+스레드 안전 
+
+https://github.com/jshag90/effective-java-study/blob/main/src/main/java/com/ji/effective/java/chapter2/item11/hashcode/PhoneNumber.java
 
 
