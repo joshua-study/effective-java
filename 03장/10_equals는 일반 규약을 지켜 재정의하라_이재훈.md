@@ -266,4 +266,4 @@ public class Point {
 ### (3) 객체 지향 5대 원칙 SOLID 중에 하나.
 - 1994년, 바바라 리스코프의 논문, “A Behavioral Notion of Subtyping”에서
   기원한 객체 지향 원칙.
-- `하위 클래스의 객체`가 `상위 클래스 객체`를 대체하더라도 소프트웨어의 기능을 깨트리지 않아야 한다. (semantic over syntacic, 구문 보다는 의미!)
+- `하위 클래스의 객체`가 `상위 클래스 객체`를 대체하더라 도 소프트웨어의 기능을 깨트리지 않아야 한다. (semantic over syntacic, 구문 보다는 의미!)
