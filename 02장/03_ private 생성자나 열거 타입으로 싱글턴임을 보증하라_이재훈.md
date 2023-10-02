@@ -26,7 +26,7 @@ public interface IElvis {
 ```
 
 ```java
-public class Elvis {
+public class Elvis implements IElvis{
   /**
    * 싱글톤 오브젝트
    * 필드를 만들면 javadoc을 만들 때 주석을 활용할 수 있다.
