@@ -78,9 +78,11 @@ class Sample(){
 - 유연성을 극대화하려면 원소의 생산자나 소비자용 입력매개변수에 와일드카드 타입을 사용하라.
 - 입력 매개변수가 생산자와 소비자 역할을 동시에 한다면 와일드카드 타입을 써도 좋을 게 없다. 
 
-### 펙시(PECS) : producer-extends, consumer-super  
+### 펙스(PECS) : producer-extends, consumer-super  
 
 - 매개변수화 타입 T가 생산자라면 <? extends T>를 사용하고, 소비자라면 <? super T>를 사용하라.
+
+## 펙스(PESC) 공식에 맞추어 코드를 개선하기
 
 ```java
 public Chooser(Collection<T> choices)
@@ -120,6 +122,101 @@ Set<Number> numbers = union(integers, doubles);
 ```java
 Set<Number> numbers = Union.<Number>union(integers, doubles);
 ```
+
+## max 메서드  
+
+### 원래 버전의 선언
+```java
+public static <E extends Comparable<E>> E max(List<E> list)
+```
+### 와일드카드 타입을 사용해 다듬은 모습
+```java
+public static <E extends Comparable<? super E>> E max(List<? extends E> list)
+```
+- Comparable은 언제나 소비자이므로, 일반적으로 Comparable<E>보다는 Comparable<? super E>를 사용하는 편이 낫다. 
+- Comparator도 마찬가지이다. 일반적으로 Comparator<E> 보다는 Comparator<? super E>를 사용하는 편이 낫다.
+
+### 와일드 타입을 사용해 재귀적 타입 한정을 다듬었다.
+```java
+public class RecursiveTypeBound {
+    public static <E extends Comparable<? super E>> E max(List<? extends E> list){
+        if(list.isEmpty())
+            throw new IllegalArgumentException("빈 리스트");
+        
+        E result = null; 
+        for(E e: list)
+            if(result == null || e.compareTo(result) > 0)
+                result = e;
+        
+        return result;
+    }
+
+    public static void main(String[] args) {
+        List<IntegerBox> list = new ArrayList<>();
+        list.add(new IntegerBox(10, "keesun"));
+        list.add(new IntegerBox(2, "whiteship"));
+        
+        System.out.println(max(list));
+    }
+    
+    
+}
+```
+
+
+### 수정된 max로만 처리 할 수 있다. 
+```java
+List<ScheducledFuture<?>> scheduledFutures =  ... ;
+```
+- Comparable을 직접 구현하지 않고, 직접 구현한 다른 타입을 확장한 타입을 지원하기 위해 와일드카드가 필요하다.
+
+### swap 메서드의 두 가지 선언
+```java
+class Sample(){
+    public static <E> void swap(List<E> list, int i, int j);
+    public static void swap(List<?> list, int i, int j);
+}
+```
+- 메서드 선언에 타입 매개변수가 한 번만 나오면 와일드 카드로 대체하라.
+
+### 다음 코드는 컴파일 되지 않는다
+```java
+class Sample(){
+    public static void swap(List<?> list, int i, int j){
+        list.set(i, list.set(j, list.get(i)));
+    }
+}
+```
+- 오류 메시가 나온다. 
+- 와일드카드 타입의 실제 타입을 알려주는 메서드를 private 도우미 메서드로 따로 작성하여 활용하는 방법
+
+```java
+class Sample(){
+    public static void swap(List<?> list, int i, int j){
+        swapHelper(list, i, j);
+    }
+    
+    private static <E> void swapHelper(List<E> list, int i, int j){
+        list.set(i, list.set(j, list.get(i)));
+    }
+}
+```
+- swap 메서드를 호출하는 클라이언트는 복잡한 swapHelper의 존재를 모른 채 그 혜택을 누리는 것이다. 
+- 도우미 메서드의 시그니처 앞에서 "public API로 쓰기에는 너무 복잡하다."는 이유로 버렸던 첫 번째 swap 메서드의 시그니처와 완전히 똑같다.
+
+## 정리 
+- 복잡하더라도 와일드카드 타입을 적용하면 API가 훨씬 유연해진다. 
+- 널리 쓰일 라이브러리를 작성한다면 반드시 와일드카드 타입을 적적히 사용해줘야 한다. 
+- PECS 공식을 기억하자. 
+- 즉, 생성자(producer)는 extends를 소비자(consumer)는 super를 사용한다.
+- Comparable과 Comparator는 모두 소비자라는 사실도 잊지 말자.
+
+## 와일드카드 활용 팁
+- 메서드 선언에 타입 매개변수가 한 번만 나오면 와일드카드로 대체하라.
+  - 한정적 타입이라면 한정적 와일드카드로
+  - 비한정적 타입이라면 비한정적 와일드카드로
+- 주의!
+  - 비한정적 와일드카드(?)로 정의한 타입에는 null을 제외한 아무것도 넣을 수 없다. 
 
 
 
